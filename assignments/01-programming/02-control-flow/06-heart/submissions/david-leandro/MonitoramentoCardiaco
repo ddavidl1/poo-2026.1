@@ -1,0 +1,59 @@
+import java.util.Scanner;
+
+public class HeartRates {
+    private String firstName, lastName;
+    private int dayOfBirth, monthOfBirth, yearOfBirth;
+
+    public HeartRates(String firstName, String lastName, int day, int month, int year) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.dayOfBirth = day;
+        this.monthOfBirth = month;
+        this.yearOfBirth = year;
+    }
+
+    // Getters e Setters
+    public String getFirstName() { return firstName; }
+    public void setFirstName(String firstName) { this.firstName = firstName; }
+    public String getLastName() { return lastName; }
+    public void setLastName(String lastName) { this.lastName = lastName; }
+
+    public int calcularIdade(int currentYear) {
+        return currentYear - yearOfBirth;
+    }
+
+    public int calcularFrequenciaMaxima(int idade) {
+        return 220 - idade;
+    }
+
+    public String calcularFrequenciaAlvo(int freqMax) {
+        int min = (int) (freqMax * 0.50);
+        int max = (int) (freqMax * 0.85);
+        return min + " bpm - " + max + " bpm";
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Digite seu primeiro nome: ");
+        String nome = scanner.next();
+        System.out.print("Digite seu sobrenome: ");
+        String sobreNome = scanner.next();
+        System.out.print("Digite sua data de nascimento (dia mês ano): ");
+        int d = scanner.nextInt();
+        int m = scanner.nextInt();
+        int a = scanner.nextInt();
+
+        HeartRates pessoa = new HeartRates(nome, sobreNome, d, m, a);
+        int idade = pessoa.calcularIdade(2026); // Ano atual conforme o sistema
+        int fMax = pessoa.calcularFrequenciaMaxima(idade);
+
+        System.out.println("\nNome: " + pessoa.getFirstName() + " " + pessoa.getLastName());
+        System.out.printf("Data de nascimento: %02d/%02d/%d%n", d, m, a);
+        System.out.println("Idade: " + idade + " anos");
+        System.out.println("Frequência cardíaca máxima: " + fMax + " bpm");
+        System.out.println("Faixa de frequência cardíaca alvo: " + pessoa.calcularFrequenciaAlvo(fMax));
+        
+        scanner.close();
+    }
+}

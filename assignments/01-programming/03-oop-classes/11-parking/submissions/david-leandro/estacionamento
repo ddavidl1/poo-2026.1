@@ -1,0 +1,35 @@
+import java.util.Scanner;
+
+public class ParkingGarage {
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        double totalGeral = 0, horas;
+
+        while (true) {
+            System.out.print("Horas estacionadas (ou -1 para sair): ");
+            horas = sc.nextDouble();
+            if (horas == -1) break;
+
+            double taxa = calculateCharges(horas);
+            totalGeral += taxa;
+            System.out.printf("Taxa do cliente: R$ %.2f%n", taxa);
+        }
+
+        System.out.printf("Total arrecadado: R$ %.2f%n", totalGeral);
+        sc.close();
+    }
+
+    public static double calculateCharges(double hours) {
+        // Taxa mínima de R$ 2.00
+        double taxa = 2.00;
+        
+        // Se passar de 3 horas, adiciona 0.50 por hora adicional ou fração
+        if (hours > 3.0) {
+            taxa += Math.ceil(hours - 3.0) * 0.50;
+        }
+
+        // Retorna o menor valor entre a taxa calculada e o máximo de R$ 10.00
+        return Math.min(taxa, 10.00);
+    }
+}

@@ -1,0 +1,28 @@
+import java.util.Scanner;
+
+public class PassosElefante {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Digite a posição da casa do amigo: ");
+        int x = scanner.nextInt();
+
+        if (x >= 1 && x <= 1000000) {
+            int passos = calcularPassosMinimos(x);
+            System.out.println(formatarSaida(passos));
+        }
+        scanner.close();
+    }
+
+    public static int calcularPassosMinimos(int x) {
+        // Divisão inteira: se houver resto, adiciona um passo final menor que 5
+        int passos = x / 5;
+        if (x % 5 != 0) {
+            passos++;
+        }
+        return passos;
+    }
+
+    public static String formatarSaida(int passos) {
+        return "O número mínimo de passos necessários é: " + passos;
+    }
+}

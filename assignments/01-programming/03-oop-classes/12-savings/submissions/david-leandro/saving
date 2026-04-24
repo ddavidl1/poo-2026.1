@@ -1,0 +1,74 @@
+import java.util.Scanner;
+
+public class SavingsAccount {
+    // Atributo de instância: cada conta tem o seu próprio saldo
+    private double savingsBalance;
+    
+    // Atributo de classe: a taxa é a mesma para todas as contas (estática)
+    private static double annualInterestRate;
+
+    // Construtor com validação de saldo
+    public SavingsAccount(double balance) {
+        if (balance < 0) {
+            throw new IllegalArgumentException("O saldo inicial não pode ser negativo.");
+        }
+        this.savingsBalance = balance;
+    }
+
+    // Método estático para modificar a taxa de juros global
+    public static void modifyInterestRate(double newRate) {
+        if (newRate < 0) {
+            throw new IllegalArgumentException("A taxa de juros não pode ser negativa.");
+        }
+        annualInterestRate = newRate;
+    }
+
+    // Calcula os juros mensais e atualiza o saldo
+    public void calculateMonthlyInterest() {
+        this.savingsBalance += (this.savingsBalance * annualInterestRate / 12);
+    }
+
+    // Retorna o saldo atual formatado
+    public String getSaldoFormatado() {
+        return String.format("R$ %.2f", this.savingsBalance);
+    }
+
+    // --- PROGRAMA PRINCIPAL (APP) ---
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        try {
+            // 1. Entrada de dados inicial
+            System.out.print("Digite o saldo inicial da conta: ");
+            double saldoInicial = sc.nextDouble();
+            SavingsAccount minhaConta = new SavingsAccount(saldoInicial);
+
+            System.out.print("Digite a taxa de juros anual (ex: 0,04 para 4%): ");
+            double taxaInicial = sc.nextDouble();
+            modifyInterestRate(taxaInicial);
+
+            // 2. Cálculo e exibição para 12 meses
+            System.out.println("\n--- PROJEÇÃO DE 12 MESES ---");
+            for (int mes = 1; mes <= 12; mes++) {
+                minhaConta.calculateMonthlyInterest();
+                System.out.println("Mês " + mes + ": " + minhaConta.getSaldoFormatado());
+            }
+
+            // 3. Alteração da taxa para o próximo período
+            System.out.print("\nDigite a NOVA taxa de juros anual: ");
+            double novaTaxa = sc.nextDouble();
+            modifyInterestRate(novaTaxa);
+
+            // 4. Cálculo de mais um mês com a nova taxa
+            minhaConta.calculateMonthlyInterest();
+            System.out.println("Saldo após Mês 13 (com nova taxa): " + minhaConta.getSaldoFormatado());
+
+        } catch (IllegalArgumentException e) {
+            System.err.println("Erro de validação: " + e.getMessage());
+        } catch (Exception e) {
+            System.err.println("Ocorreu um erro inesperado na entrada de dados.");
+        } finally {
+            sc.close();
+        }
+    }
+}

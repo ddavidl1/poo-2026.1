@@ -1,0 +1,49 @@
+import java.util.Scanner;
+
+public class HealthProfile {
+    private String firstName, lastName;
+    private char gender;
+    private int day, month, year;
+    private double height, weight;
+
+    public HealthProfile(String fName, String lName, char g, int d, int m, int y, double h, double w) {
+        this.firstName = fName; this.lastName = lName; this.gender = g;
+        this.day = d; this.month = m; this.year = y;
+        this.height = h; this.weight = w;
+    }
+
+    // Cálculos simplificados
+    public int getIdade(int atual) { return atual - year; }
+    
+    public int getFreqMax(int idade) { return 220 - idade; }
+
+    public String getFreqAlvo(int fMax) {
+        return (int)(fMax * 0.5) + " - " + (int)(fMax * 0.85) + " bpm";
+    }
+
+    public double getIMC() { return (weight * 703) / (height * height); }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        
+        System.out.println("--- Cadastro de Paciente ---");
+        System.out.print("Nome e Sobrenome: ");
+        String nome = sc.next(), sobrenome = sc.next();
+        System.out.print("Gênero (M/F) e Nascimento (DD MM AAAA): ");
+        char gen = sc.next().toUpperCase().charAt(0);
+        int d = sc.nextInt(), m = sc.nextInt(), a = sc.nextInt();
+        System.out.print("Altura (pol) e Peso (lb): ");
+        double h = sc.nextDouble(), w = sc.nextDouble();
+
+        HealthProfile p = new HealthProfile(nome, sobrenome, gen, d, m, a, h, w);
+        int idade = p.getIdade(2026), fMax = p.getFreqMax(idade);
+
+        // Saída formatada de forma direta
+        System.out.printf("\nPACIENTE: %s %s [%c]\n", p.firstName, p.lastName, p.gender);
+        System.out.printf("IDADE: %d anos | IMC: %.1f\n", idade, p.getIMC());
+        System.out.printf("FREQ. MÁXIMA: %d | ALVO: %s\n", fMax, p.getFreqAlvo(fMax));
+
+        System.out.println("\nTABELA IMC: <18.5: Abaixo | 18.5-24.9: Normal | 25-29.9: Sobrepeso | >30: Obesidade");
+        sc.close();
+    }
+}

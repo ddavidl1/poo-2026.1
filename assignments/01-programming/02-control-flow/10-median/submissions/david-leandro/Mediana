@@ -1,0 +1,25 @@
+import java.util.Scanner;
+
+public class MedianCalculator {
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        
+        System.out.println("Digite três números inteiros:");
+        int n1 = sc.nextInt(), n2 = sc.nextInt(), n3 = sc.nextInt();
+
+        System.out.println("A mediana dos números é: " + findMedian(n1, n2, n3));
+        sc.close();
+    }
+
+    public static int findMedian(int a, int b, int c) {
+        // Se 'a' estiver entre 'b' e 'c', ele é a mediana
+        if ((a > b) != (a > c)) return a;
+        
+        // Se 'b' estiver entre 'a' e 'c', ele é a mediana
+        if ((b > a) != (b > c)) return b;
+        
+        // Se nenhum dos dois acima for, restou apenas o 'c'
+        return c;
+    }
+}

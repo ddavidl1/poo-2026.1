@@ -1,0 +1,27 @@
+public class PalindromeChecker {
+    public static void main(String[] args) {
+        java.util.Scanner sc = new java.util.Scanner(System.in);
+        String entrada;
+        do {
+            System.out.print("Digite uma sequência: ");
+            entrada = sc.nextLine();
+        } while (!isValidInput(entrada));
+
+        if (isPalindrome(entrada)) System.out.println("É um palíndromo.");
+        else System.out.println("Não é um palíndromo.");
+    }
+
+    public static boolean isValidInput(String input) {
+        return input != null && !input.trim().isEmpty();
+    }
+
+    public static boolean isPalindrome(String input) {
+        input = input.toLowerCase().replaceAll("\\s+", "");
+        int i = 0, j = input.length() - 1;
+        while (i < j) {
+            if (input.charAt(i) != input.charAt(j)) return false;
+            i++; j--;
+        }
+        return true;
+    }
+}

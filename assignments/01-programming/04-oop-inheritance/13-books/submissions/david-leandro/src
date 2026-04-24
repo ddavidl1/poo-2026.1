@@ -1,0 +1,77 @@
+// 1. Classe Base (Superclasse)
+class Book {
+    protected String title;
+    protected String author;
+    protected int year;
+
+    // Construtor da classe base
+    public Book(String title, String author, int year) {
+        this.title = title;
+        this.author = author;
+        this.year = year;
+    }
+
+    // Sobrescrita do método toString
+    @Override
+    public String toString() {
+        return String.format("Título: %s | Autor: %s | Ano: %d", title, author, year);
+    }
+}
+
+// 2. Subclasse para Livros Impressos
+class PrintBook extends Book {
+    private String publisher;
+    private String isbn;
+
+    public PrintBook(String title, String author, int year, String publisher, String isbn) {
+        super(title, author, year); // Chama o construtor da superclasse
+        this.publisher = publisher;
+        this.isbn = isbn;
+    }
+
+    @Override
+    public String toString() {
+        // Aproveita o toString do pai e adiciona o específico
+        return super.toString() + String.format(" | Editora: %s | ISBN: %s", publisher, isbn);
+    }
+}
+
+// 3. Subclasse para Audiobooks
+class AudioBook extends Book {
+    private double fileSizeInMB;
+    private int playLengthInMinutes;
+    private String narrator;
+
+    public AudioBook(String title, String author, int year, double size, int length, String narrator) {
+        super(title, author, year);
+        this.fileSizeInMB = size;
+        this.playLengthInMinutes = length;
+        this.narrator = narrator;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() + String.format(" | Tamanho: %.2fMB | Duração: %d min | Narrador: %s", 
+                                                 fileSizeInMB, playLengthInMinutes, narrator);
+    }
+}
+
+// 4. Classe Principal (App)
+public class BookApp {
+    public static void main(String[] args) {
+        // Instanciando os objetos conforme solicitado
+        Book genericBook = new Book("O Programador Pragmático", "Andrew Hunt", 1999);
+        
+        PrintBook physicalBook = new PrintBook("Clean Code", "Robert C. Martin", 2008, 
+                                               "Prentice Hall", "978-0132350884");
+        
+        AudioBook digitalBook = new AudioBook("Java: Como Programar", "Deitel", 2017, 
+                                              45.5, 1200, "Voz Digital");
+
+        // Imprimindo as informações usando Polimorfismo
+        System.out.println("--- Lista de Livros ---");
+        System.out.println(genericBook.toString());
+        System.out.println(physicalBook.toString());
+        System.out.println(digitalBook.toString());
+    }
+}
