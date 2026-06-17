@@ -1,3 +1,4 @@
+import java.time.LocalDate;
 import java.util.Scanner;
 
 public class HealthProfile {
@@ -24,23 +25,27 @@ public class HealthProfile {
 
     // getters
     public String getFirstName() {
-        return firstName;
+        return this.firstName;
     }
 
     public String getLastName() {
-        return lastName;
+        return this.lastName;
     }
 
     public int getDayOfBirth() {
-        return dayOfBirth;
+        return this.dayOfBirth;
     }
 
     public int getMonthOfBirth() {
-        return monthOfBirth;
+        return this.monthOfBirth;
     }
 
     public int getYearOfBirth() {
-        return yearOfBirth;
+        return this.yearOfBirth;
+    }
+
+    public int getGender() {
+        return this.gender;
     }
 
     // setters
@@ -78,25 +83,29 @@ public class HealthProfile {
 
     // funcionalidades:
     // calcular idade
-    public int calcularIdade(int anoAtual) {
-        return anoAtual - this.yearOfBirth;
+    public int calculateAge(int currentYear) {
+        int age = currentYear - yearOfBirth;
+        LocalDate today = LocalDate.now();
+        if (monthOfBirth > today.getMonthValue() || (monthOfBirth == today.getMonthValue() && dayOfBirth > today.getDayOfMonth())) {
+            age--;
+        }
+        return Math.max(age, 0);
     }
-
     // calcular frequência cardíaca máxima
-    public int calcularFrequenciaCardiacaMaxima(int anoAtual) {
-        return 220 - calcularIdade(anoAtual);
+    public int calculateMaxHeartRate() {
+        return 220 - calculateAge(2025);
     }
 
     // calcular frequência cardíaca alvo
-    public String calcularFrequenciaCardiacaAlvo(int anoAtual) {
-        double frequenciaCardiacaAlvoMin = (calcularFrequenciaCardiacaMaxima(anoAtual) * 0.5);
-        double frequenciaCardiacaAlvoMax = (calcularFrequenciaCardiacaMaxima(anoAtual) * 0.85);
-        return String.format("Frequência Cardíaca Alvo: %.2f - %.2f bpm", frequenciaCardiacaAlvoMin,
-                frequenciaCardiacaAlvoMax);
+    public String calculateTargetHeartRate() {
+        int heartRateMin = (int) (calculateMaxHeartRate() * 0.5);
+        int heartRateMax = (int) (calculateMaxHeartRate() * 0.85);
+        return String.format("%d bpm - %d bpm", heartRateMin,
+                heartRateMax);
     }
 
     //calcular BMI
-    public float calcularBMI() {
+    public float calculateBMI() {
         float heightInMeters = this.heightInInches * 0.0254f;
         return this.weightInPounds * 0.453592f / (heightInMeters * heightInMeters);
     }
@@ -126,13 +135,13 @@ public class HealthProfile {
 
         HealthProfile pessoa = new HealthProfile(primeiroNome, ultimoNome, genero, diaNascimento, mesNascimento, anoNascimento, altura, peso);
         System.out.printf("Nome: %s %s%n", pessoa.getFirstName(), pessoa.getLastName());
-        System.out.printf("Gênero: %s%n", (genero == 'M' ? "Masculino" : "Feminino"));
+        System.out.printf("Gênero: %s%n", pessoa.getGender());
         System.out.printf("Data de nascimento: %02d/%02d/%d%n", pessoa.getDayOfBirth(), pessoa.getMonthOfBirth(), pessoa.getYearOfBirth());
-        System.out.printf("Idade: %d anos%n", pessoa.calcularIdade(2026));
+        System.out.printf("Idade: %d anos%n", pessoa.calculateAge(2025));
         System.out.printf("Altura: %.2f polegadas%n", pessoa.heightInInches);
         System.out.printf("Peso: %.2f libras%n", pessoa.weightInPounds);
-        System.out.printf("Índice de Massa Corporal (BMI): %.2f%n", pessoa.calcularBMI());
-        System.out.printf("Frequência cardíaca máxima: %d bpm%n", pessoa.calcularFrequenciaCardiacaMaxima(2026));
-        System.out.println(pessoa.calcularFrequenciaCardiacaAlvo(2026));
+        System.out.printf("Índice de Massa Corporal (BMI): %.2f%n", pessoa.calculateBMI());
+        System.out.printf("Frequência cardíaca máxima: %d bpm%n", pessoa.calculateMaxHeartRate());
+        System.out.printf("Faixa de Frequência Cardíaca Alvo: %s%n", pessoa.calculateTargetHeartRate());
     }
 }

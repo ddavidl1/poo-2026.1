@@ -5,13 +5,18 @@ public class ParkingGarage {
     private int cliente;
     private double horas;
 
-    public static double calculateCharges(int hours) {
-        double rate = 0.5; // $0.50 por hora
-        if(hours <= 3) {
-            return 2; // $2 para as primeiras 3 horas
-        } else{
-            return Math.min(2 + (hours - 3) * 0.5, 10); // $2 para as primeiras 3 horas e $0.50 para cada hora adicional. O valor máximo é $10
-        }
+    public static double calculateCharges(double hours) {
+        if (hours <= 0) {return 2.0;}
+
+        if (hours >= 24) {return 10.0;}
+
+        if (hours <= 3.0) {return 2.0;}
+
+        double roundedHours = Math.ceil(hours);
+        double charge = 2.0 + ((roundedHours - 3.0) * 0.5);
+
+        if (charge > 10.0) {return 10.0;}
+        return charge;
     }
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -26,7 +31,7 @@ public class ParkingGarage {
             if(horas == -1) {
                 break;
             }
-            double charge = calculateCharges((int) horas);
+            double charge = calculateCharges(horas);
             total += charge;
             System.out.println("Cliente " + cliente + ": Taxa de estacionamento: $" + String.format("%.2f", charge));
             cliente++;
